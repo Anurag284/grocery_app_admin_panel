@@ -1,34 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app_admin_panel/Services/utils.dart';
 import 'package:grocery_app_admin_panel/consts/constant.dart';
+import 'package:grocery_app_admin_panel/controller/menu_contoller.dart';
 import 'package:grocery_app_admin_panel/responsive.dart';
+import 'package:grocery_app_admin_panel/screens/dashboard_screen.dart';
 import 'package:grocery_app_admin_panel/widgets/grid_product.dart';
 import 'package:grocery_app_admin_panel/widgets/header.dart';
+import 'package:grocery_app_admin_panel/widgets/side_menu.dart';
 import 'package:provider/provider.dart';
-import 'package:grocery_app_admin_panel/controller/menu_contoller.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+class AllProductScreen extends StatefulWidget {
+  const AllProductScreen({super.key});
 
   @override
+  State<AllProductScreen> createState() => _AllProductScreenState();
+}
+
+class _AllProductScreenState extends State<AllProductScreen> {
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: EdgeInsets.all(defaultPading),
-        child: Column(
+    Size size = Utils(context).screenSize;
+    return Scaffold(
+      key: context.read<MenuContoller>().getGridScaffoldKey,
+      drawer: SideMenu(),
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Header(
-              fct: () {
-                context.read<MenuContoller>().controlDashBoardMenu();
-              },
-            ),
-            SizedBox(height: defaultPading),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
+            if (Responsive.isDesktop(context)) Expanded(child: SideMenu()),
+            Expanded(
+              flex: 4,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultPading),
                   child: Column(
                     children: [
+                      Header(
+                        fct: () {
+                          context.read<MenuContoller>().controlProductsMenu();
+                        },
+                      ),
+                      SizedBox(height: defaultPading),
                       Responsive(
                         mobile: ProductGrid(
                           crossAxisCount:
@@ -43,20 +55,23 @@ class DashboardScreen extends StatelessWidget {
                                   : size.width < 850
                                   ? 0.8
                                   : 0.9,
+                          isInMain: false,
                         ),
                         desktop: ProductGrid(
                           crossAxisCount: 4,
                           childAspectRation: size.width < 1400 ? 0.8 : 1.15,
+                          isInMain: false,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
       ),
     );
+    ;
   }
 }

@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (Responsive.isDesktop(context)) Expanded(child: SideMenu()),
-            Expanded(flex: 5, child: DashboardScreen()),
+            Expanded(flex: 4, child: DashboardScreen()),
           ],
         ),
       ),
