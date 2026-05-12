@@ -3,6 +3,7 @@ import 'package:grocery_app_admin_panel/consts/constant.dart';
 import 'package:grocery_app_admin_panel/responsive.dart';
 import 'package:grocery_app_admin_panel/widgets/grid_product.dart';
 import 'package:grocery_app_admin_panel/widgets/header.dart';
+import 'package:grocery_app_admin_panel/widgets/order_list.dart';
 import 'package:provider/provider.dart';
 import 'package:grocery_app_admin_panel/controller/menu_contoller.dart';
 
@@ -54,6 +55,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
+            OrderList(),
           ],
         ),
       ),

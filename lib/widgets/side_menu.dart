@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app_admin_panel/InnerScrrens/all_orders.dart';
 import 'package:grocery_app_admin_panel/InnerScrrens/all_products.dart';
 import 'package:grocery_app_admin_panel/Services/utils.dart';
 import 'package:grocery_app_admin_panel/provider/dar_theme_provider.dart';
@@ -45,7 +46,12 @@ class _SideMenuState extends State<SideMenu> {
           ),
           DrawerListTile(
             title: 'View all order',
-            press: () {},
+            press: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AllOrderScreen()),
+              );
+            },
             icon: Icons.shopping_bag,
           ),
           SwitchListTile(
