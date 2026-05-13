@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app_admin_panel/InnerScrrens/add_product.dart';
+import 'package:grocery_app_admin_panel/Services/global_methods.dart';
+import 'package:grocery_app_admin_panel/Services/utils.dart';
 import 'package:grocery_app_admin_panel/consts/constant.dart';
 import 'package:grocery_app_admin_panel/responsive.dart';
+import 'package:grocery_app_admin_panel/widgets/button.dart';
 import 'package:grocery_app_admin_panel/widgets/grid_product.dart';
 import 'package:grocery_app_admin_panel/widgets/header.dart';
 import 'package:grocery_app_admin_panel/widgets/order_list.dart';
+import 'package:grocery_app_admin_panel/widgets/text_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:grocery_app_admin_panel/controller/menu_contoller.dart';
 
@@ -13,6 +18,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    final color = Utils(context).color;
     return SafeArea(
       child: SingleChildScrollView(
         padding: EdgeInsets.all(defaultPading),
@@ -22,6 +28,31 @@ class DashboardScreen extends StatelessWidget {
               fct: () {
                 context.read<MenuContoller>().controlDashBoardMenu();
               },
+            ),
+            TextWidget(title: 'Latest Products', color: color, textSize: 16),
+            SizedBox(height: 15),
+            Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ButtonWidget(
+                  onPressed: () {},
+                  text: 'View All',
+                  icon: Icons.store,
+                  backgroundColor: Colors.blue,
+                ),
+                Spacer(),
+                ButtonWidget(
+                  onPressed: () {
+                    GlobalMethods.navigateTo(
+                      context: context,
+                      routeName: UploadProductForm.routeName,
+                    );
+                  },
+                  text: 'Add Product',
+                  icon: Icons.add,
+                  backgroundColor: Colors.blue,
+                ),
+              ],
             ),
             SizedBox(height: defaultPading),
             Row(

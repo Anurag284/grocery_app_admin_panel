@@ -6,6 +6,8 @@ class MenuContoller extends ChangeNotifier {
   final GlobalKey<ScaffoldState> _addProductScaffoldKey =
       GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _orderScaffoldKey = GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _productScaffoldKey =
+  // GlobalKey<ScaffoldState>();
 
   //Getters
   GlobalKey<ScaffoldState> get getScaffoldKey => _scaffoldKey;
@@ -13,6 +15,7 @@ class MenuContoller extends ChangeNotifier {
   GlobalKey<ScaffoldState> get getAddProductScaffoldKey =>
       _addProductScaffoldKey;
   GlobalKey<ScaffoldState> get getOrderScaffoldKey => _orderScaffoldKey;
+  // GlobalKey<ScaffoldState> get getProductScaffoldKey => _productScaffoldKey;
 
   //CallBacks
   void controlDashBoardMenu() {
