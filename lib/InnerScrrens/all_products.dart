@@ -36,6 +36,7 @@ class _AllProductScreenState extends State<AllProductScreen> {
                   child: Column(
                     children: [
                       Header(
+                        title: 'All Products',
                         fct: () {
                           context.read<MenuContoller>().controlProductsMenu();
                         },

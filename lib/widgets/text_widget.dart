@@ -6,7 +6,7 @@ class TextWidget extends StatefulWidget {
     super.key,
     required this.title,
     required this.color,
-    required this.textSize,
+    this.textSize = 16.0,
     this.isTitle = false,
     this.maxLines = 10,
   });

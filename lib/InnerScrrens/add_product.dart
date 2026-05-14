@@ -1,5 +1,9 @@
+import 'dart:ui';
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:flutter_dotted_border/flutter_dotted_border.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:grocery_app_admin_panel/Services/utils.dart';
 import 'package:grocery_app_admin_panel/controller/menu_contoller.dart';
@@ -20,9 +24,10 @@ class UploadProductForm extends StatefulWidget {
 
 class _UploadProductFormState extends State<UploadProductForm> {
   final _formKey = GlobalKey<FormState>();
-
+  String catValue = 'Vegetables';
   late final TextEditingController titleController, priceController;
-
+  int groupValue = 1;
+  bool isPiece = false;
   @override
   void initState() {
     priceController = TextEditingController();
@@ -67,14 +72,16 @@ class _UploadProductFormState extends State<UploadProductForm> {
               child: Column(
                 children: [
                   Header(
+                    title: "Add Product",
                     fct: () {
                       context.read<MenuContoller>().controlAddProductMenu();
                     },
+                    showTextField: true,
                   ),
                   Container(
-                    width: size.width > 650 ? 450 : size.width,
-                    color: Theme.of(context).cardColor,
-                    // color: Colors.yellow,
+                    width: size.width > 850 ? 400 : size.width,
+                    // color: Theme.of(context).cardColor,
+                    color: Colors.yellow,
                     padding: EdgeInsets.all(16),
                     margin: EdgeInsets.all(16),
                     child: Form(
@@ -82,12 +89,11 @@ class _UploadProductFormState extends State<UploadProductForm> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           TextWidget(
                             title: 'Product title',
                             color: color,
-                            textSize: 18,
                             isTitle: true,
                           ),
                           SizedBox(height: 10),
@@ -116,15 +122,16 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                       TextWidget(
                                         title: 'Price in \$',
                                         color: color,
-                                        textSize: 16,
+                                        textSize: 12,
                                         isTitle: true,
                                       ),
                                       SizedBox(height: 10),
                                       SizedBox(
+                                        // height: 30,
                                         width: 100,
                                         child: TextFormField(
                                           controller: priceController,
-                                          key: ValueKey('Price \&'),
+                                          key: ValueKey('Price in \$*'),
                                           keyboardType: TextInputType.number,
                                           validator: (value) {
                                             if (value!.isEmpty) {
@@ -134,9 +141,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                           },
                                           inputFormatters: <TextInputFormatter>[
                                             FilteringTextInputFormatter.allow(
-                                              RegExp(
-                                                r'^[0-9]+(\.[0-9]{0,2})?$',
-                                              ),
+                                              RegExp(r'[0-9.]'),
                                             ),
                                           ],
                                           decoration: inputDecoration,
@@ -146,28 +151,70 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                       TextWidget(
                                         title: 'Product Category',
                                         color: color,
-                                        textSize: 16,
+
                                         isTitle: true,
                                       ),
                                       SizedBox(height: 10),
-                                      //Drop down menu
+                                      dropDownCategory(),
                                       SizedBox(height: 20),
                                       TextWidget(
                                         title: 'Measure Unit',
                                         color: color,
-                                        textSize: 16,
                                         isTitle: true,
                                       ),
                                       SizedBox(height: 10),
-                                      //Radio button
+                                      Row(
+                                        children: [
+                                          TextWidget(title: 'KG', color: color),
+                                          Radio(
+                                            value: 1,
+                                            groupValue: groupValue,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                groupValue = 1;
+                                                isPiece = false;
+                                              });
+                                            },
+                                            activeColor: Colors.green,
+                                          ),
+                                          TextWidget(
+                                            title: 'Piece',
+                                            color: color,
+                                          ),
+                                          Radio(
+                                            value: 2,
+                                            groupValue: groupValue,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                groupValue = 2;
+                                                isPiece = true;
+                                              });
+                                            },
+                                            activeColor: Colors.green,
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                               //Image to be picked
                               Expanded(
-                                flex: 1,
-                                child: Container(color: Colors.red),
+                                flex: 4,
+                                child: Container(
+                                  height:
+                                      size.width > 850
+                                          ? 350
+                                          : size.width * 0.45,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).scaffoldBackgroundColor,
+                                  ),
+                                  child: dottedBorder(color: color),
+                                ),
                               ),
                               Expanded(
                                 flex: 1,
@@ -179,7 +226,6 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                         child: TextWidget(
                                           title: 'Clear',
                                           color: Colors.red,
-                                          textSize: 14,
                                         ),
                                       ),
                                       TextButton(
@@ -187,7 +233,6 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                         child: TextWidget(
                                           title: 'Update Image',
                                           color: Colors.blue,
-                                          textSize: 14,
                                         ),
                                       ),
                                     ],
@@ -225,6 +270,69 @@ class _UploadProductFormState extends State<UploadProductForm> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget dottedBorder({required Color color}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: DottedBorder(
+        options: RoundedRectDottedBorderOptions(
+          dashPattern: [6, 7],
+          color: color,
+          radius: Radius.circular(12),
+        ),
+
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.image_outlined, color: color, size: 50),
+              TextButton(
+                onPressed: () {},
+                child: TextWidget(title: 'Choose an image', color: Colors.blue),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget dropDownCategory() {
+    final color = Utils(context).color;
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: 12,
+              color: color,
+            ),
+            // menuWidth: 100,
+            value: catValue,
+            onChanged: (value) {
+              setState(() {
+                catValue = value!;
+              });
+              print(value);
+            },
+            items: [
+              DropdownMenuItem(value: 'Vegetables', child: Text('Vegetables')),
+              DropdownMenuItem(value: 'Fruits', child: Text('Fruits')),
+              DropdownMenuItem(value: 'Grains', child: Text('Grains')),
+              DropdownMenuItem(value: 'Nuts', child: Text('Nuts')),
+              DropdownMenuItem(value: 'Herbs', child: Text('Herbs')),
+              DropdownMenuItem(value: 'Spices', child: Text('Spices')),
+            ],
+            hint: Text('Select Category'),
+          ),
+        ),
       ),
     );
   }

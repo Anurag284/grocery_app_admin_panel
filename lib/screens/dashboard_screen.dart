@@ -25,6 +25,7 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           children: [
             Header(
+              title: 'Dashboard',
               fct: () {
                 context.read<MenuContoller>().controlDashBoardMenu();
               },
@@ -43,9 +44,11 @@ class DashboardScreen extends StatelessWidget {
                 Spacer(),
                 ButtonWidget(
                   onPressed: () {
-                    GlobalMethods.navigateTo(
-                      context: context,
-                      routeName: UploadProductForm.routeName,
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UploadProductForm(),
+                      ),
                     );
                   },
                   text: 'Add Product',

@@ -4,8 +4,15 @@ import 'package:grocery_app_admin_panel/consts/constant.dart';
 import 'package:grocery_app_admin_panel/responsive.dart';
 
 class Header extends StatelessWidget {
-  const Header({super.key, required this.fct});
+  const Header({
+    super.key,
+    required this.fct,
+    required this.title,
+    this.showTextField = false,
+  });
   final Function fct;
+  final String title;
+  final bool showTextField;
 
   @override
   Widget build(BuildContext context) {
@@ -23,39 +30,38 @@ class Header extends StatelessWidget {
         if (Responsive.isDesktop(context))
           Padding(
             padding: EdgeInsets.all(defaultPading),
-            child: Text(
-              'DashBoard',
-              style: TextStyle(color: color, fontSize: 20),
-            ),
+            child: Text(title, style: TextStyle(color: color, fontSize: 20)),
           ),
         if (Responsive.isDesktop(context))
           Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-        Expanded(
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search...',
-              hintStyle: TextStyle(color: color),
-              fillColor: Theme.of(context).cardColor,
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide.none,
-              ),
-              suffixIcon: InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.all(defaultPading),
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
+        showTextField
+            ? Container()
+            : Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  hintStyle: TextStyle(color: color),
+                  fillColor: Theme.of(context).cardColor,
+                  filled: true,
+                  border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderSide: BorderSide.none,
                   ),
-                  child: Icon(Icons.search, size: 25),
+                  suffixIcon: InkWell(
+                    onTap: () {},
+                    child: Container(
+                      padding: EdgeInsets.all(defaultPading),
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Icon(Icons.search, size: 25),
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
       ],
     );
   }

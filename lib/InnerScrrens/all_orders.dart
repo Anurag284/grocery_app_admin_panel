@@ -37,6 +37,7 @@ class _AllOrderScreenState extends State<AllOrderScreen> {
                   child: Column(
                     children: [
                       Header(
+                        title: 'All Orders',
                         fct: () {
                           context.read<MenuContoller>().controlOrderMenu();
                         },
