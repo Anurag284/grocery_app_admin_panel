@@ -47,6 +47,17 @@ class _UploadProductFormState extends State<UploadProductForm> {
     super.dispose();
   }
 
+  void _clearForm() {
+    isPiece = false;
+    groupValue = 1;
+    priceController.clear();
+    titleController.clear();
+    setState(() {
+      _pickedImage = null;
+      webImage = Uint8List(8);
+    });
+  }
+
   void uploadForm() async {
     final isValid = _formKey.currentState!.validate();
   }
@@ -221,14 +232,20 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                   child:
                                       _pickedImage == null
                                           ? dottedBorder(color: color)
-                                          : kIsWeb
-                                          ? Image.memory(
-                                            webImage,
-                                            fit: BoxFit.fill,
-                                          )
-                                          : Image.file(
-                                            _pickedImage!,
-                                            fit: BoxFit.fill,
+                                          : ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                            child:
+                                                kIsWeb
+                                                    ? Image.memory(
+                                                      webImage,
+                                                      fit: BoxFit.fill,
+                                                    )
+                                                    : Image.file(
+                                                      _pickedImage!,
+                                                      fit: BoxFit.fill,
+                                                    ),
                                           ),
                                 ),
                               ),
@@ -238,7 +255,12 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                   child: Column(
                                     children: [
                                       TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          setState(() {
+                                            _pickedImage = null;
+                                            webImage = Uint8List(8);
+                                          });
+                                        },
                                         child: TextWidget(
                                           title: 'Clear',
                                           color: Colors.red,
@@ -263,7 +285,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 ButtonWidget(
-                                  onPressed: () {},
+                                  onPressed: _clearForm,
                                   text: 'Clear Form',
                                   icon: IconlyBold.danger,
                                   backgroundColor: Colors.red.shade300,
